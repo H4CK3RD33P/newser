@@ -1,1 +1,3 @@
 newser/__pycache__/*
+articles/__pycache__/*
+articles/migrations/__pycache__/*

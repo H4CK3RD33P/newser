@@ -2,6 +2,9 @@ from rest_framework import serializers
 from articles.models import Article
 
 class ArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ('id','title','author','description','body','created','updated')
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField()
     author = serializers.CharField()

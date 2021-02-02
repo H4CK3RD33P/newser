@@ -54,3 +54,26 @@ def all_authors(request):
             return Response(serializer.validated_data, status.HTTP_201_CREATED)
         else:
             return Response(serializer.validated_data, status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET','PUT','DELETE'])
+def detail_author(request,pk):
+    try:
+        author = Author.objects.get(pk=pk)
+    except Author.DoesNotExist:
+        return Response({"error":{
+            "code":404,
+            "message": "Author not found!"
+        }}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        serializer = AuthorSerializer(author)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    elif request.method == 'PUT':
+        serializer = AuthorSerializer(author,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.validated_data,status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        author.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

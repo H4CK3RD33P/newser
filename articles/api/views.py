@@ -1,22 +1,22 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import ArticleSerializer
-from articles.models import Article
+from .serializers import ArticleSerializer,AuthorSerializer
+from articles.models import Article, Author
 
 @api_view(['GET','POST'])
 def all_articles(request):
     if request.method == 'GET':
         articles = Article.objects.all()
-        serialzer = ArticleSerializer(articles,many=True)
-        return Response(serialzer.data)
+        serializer = ArticleSerializer(articles,many=True)
+        return Response(serializer.data)
     elif request.method == 'POST':
-        serialzer = ArticleSerializer(data=request.data)
-        if serialzer.is_valid():
-            serialzer.save()
-            return Response(serialzer.validated_data, status.HTTP_201_CREATED)
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.validated_data, status.HTTP_201_CREATED)
         else:
-            return Response(serialzer.validated_data, status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.validated_data, status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','PUT','DELETE'])
 def detail_article(request,pk):
@@ -41,3 +41,16 @@ def detail_article(request,pk):
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
         
+@api_view(['GET','POST'])
+def all_authors(request):
+    if request.method == 'GET':
+        authors = Author.objects.all()
+        serializer = AuthorSerializer(authors,many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = AuthorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.validated_data, status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.validated_data, status.HTTP_400_BAD_REQUEST)

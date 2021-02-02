@@ -45,7 +45,7 @@ def detail_article(request,pk):
 def all_authors(request):
     if request.method == 'GET':
         authors = Author.objects.all()
-        serializer = AuthorSerializer(authors,many=True)
+        serializer = AuthorSerializer(authors,many=True,context={'request': request})
         return Response(serializer.data)
     elif request.method == 'POST':
         serializer = AuthorSerializer(data=request.data)
@@ -65,7 +65,7 @@ def detail_author(request,pk):
             "message": "Author not found!"
         }}, status=status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':
-        serializer = AuthorSerializer(author)
+        serializer = AuthorSerializer(author,context={'request': request})
         return Response(serializer.data,status=status.HTTP_200_OK)
     elif request.method == 'PUT':
         serializer = AuthorSerializer(author,data=request.data)

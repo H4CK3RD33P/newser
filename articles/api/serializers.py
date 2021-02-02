@@ -8,6 +8,10 @@ class ArticleSerializer(serializers.ModelSerializer):
         exclude = ('id',)
 
 class AuthorSerializer(serializers.ModelSerializer):
+    articles = serializers.HyperlinkedRelatedField(read_only=True,many=True,view_name="detail_article")
     class Meta:
         model = Author
-        exclude = ('id',)
+        fields = "__all__"
+
+    #def articles(self,instance):
+     #   return serializers.HyperlinkedRelatedField(many=True,read_only=True,view_name="detail_article")

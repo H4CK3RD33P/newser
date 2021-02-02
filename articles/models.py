@@ -11,7 +11,7 @@ class Author(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
-    author = models.ForeignKey(Author,on_delete=models.CASCADE)
+    author = models.ForeignKey(Author,on_delete=models.CASCADE,related_name="articles")
     description = models.TextField(max_length=300)
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
